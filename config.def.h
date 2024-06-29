@@ -1,5 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/XF86keysym.h>
+
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -24,20 +26,20 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "", "󰈹", "^_^", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class						instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Gimp",						NULL,     NULL,           0,         1,          0,           0,        -1 },
-	{ "Firefox",				NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
-	{ "St",							NULL,     NULL,           0,         0,          1,           0,        -1 },
-	{ "Alacritty",      NULL,     NULL,           0,         0,          1,           0,        -1 },
-	{ "kitty",					NULL,     NULL,           0,         0,          1,           0,        -1 },
-	{ NULL,							NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
+	/* class		instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "Gimp",		NULL,     NULL,           0,         1,          0,           0,        -1 },
+	{ "Firefox",		NULL,     NULL,           1 << 1,    0,          0,          -1,        -1 },
+	{ "St",			NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "Alacritty",		NULL,     NULL,           1,         0,          1,           0,        -1 },
+	{ "kitty",		NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ NULL,			NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
 /* layout(s) */
@@ -70,6 +72,10 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", norm_bg, "-nf", norm_fg, "-sb", sel_border, "-sf", sel_fg, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *term2cmd[]  = { "kitty", NULL };
+
+static const char *volup[]  = { "amixer", "set", "Master", "2%+", NULL };
+static const char *voldown[]  = { "amixer", "set", "Master", "2%-", NULL };
+static const char *voltoggle[]  = { "amixer", "set", "Master", "toggle", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -108,6 +114,9 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ WINKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ 0,         XF86XK_AudioLowerVolume,      spawn,          {.v = voldown } },
+	{ 0,         XF86XK_AudioRaiseVolume,      spawn,          {.v = volup } },
+	{ 0,                XF86XK_AudioMute,      spawn,          {.v = voltoggle } },
 };
 
 /* button definitions */
