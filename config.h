@@ -19,14 +19,14 @@ static char sel_fg[] = "#eeeeee";
 static char sel_bg[] = "#005577";
 static char sel_border[] = "#005577";
 
-static const char *colors[][3]      = {
+static char *colors[][3]      = {
     /*               fg           bg         border                         */
     [SchemeNorm] = { norm_fg,     norm_bg,   norm_border }, // unfocused wins
     [SchemeSel]  = { sel_fg,      sel_bg,    sel_border },  // the focused win
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7"/*, "8", "9"*/ };
+static const char *tags[] = { "", "www", "", "<𝟑", "ᝰ.ᐟ", "ᓚᘏᗢ", ">ᴗ<"/*, "8", "9"*/ };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -35,9 +35,10 @@ static const Rule rules[] = {
 	 */
 	/* class		instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	/*{ "Gimp",		NULL,     NULL,           0,         1,          0,           0,        -1 },*/
-	/*{ "Firefox",		NULL,     NULL,           1 << 1,    0,          0,          -1,        -1 },*/
+	{ "firefox",            NULL,     NULL,           1 << 1,    0,          0,          -1,        -1 },
+	{ "Thunar",		NULL,     NULL,           1 << 2,    0,          0,          -1,        -1 },
 	/*{ "St",		NULL,     NULL,           0,         0,          1,           0,        -1 },*/
-	/*{ "Alacritty",	NULL,     NULL,           1,         0,          1,           0,        -1 },*/
+	{ "Alacritty",	        NULL,     NULL,           1,         0,          1,           0,        -1 },
 	/*{ "kitty",		NULL,     NULL,           0,         0,          1,           0,        -1 },*/
 	{ NULL,			NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
@@ -57,7 +58,6 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod1Mask
-#define WINKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -83,12 +83,12 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ WINKEY,                       XK_Return, zoom,           {0} },
-	{ WINKEY,                       XK_Tab,    view,           {0} },
+	{ MODKEY,                       XK_Return, zoom,           {0} },
+	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
-	{ WINKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ WINKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ WINKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
@@ -107,7 +107,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	/*TAGKEYS(                        XK_8,                      7)*/
 	/*TAGKEYS(                        XK_9,                      8)*/
-	{ WINKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 };
 
 /* button definitions */
